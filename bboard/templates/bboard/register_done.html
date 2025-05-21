@@ -1,0 +1,11 @@
+{% extends 'bboard/basic.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}Регистрация завершена{% endblock %}
+
+{% block content %}
+<h2>Регистрация</h2>
+<p>Регистрация пользователя завершена.</p>
+<p>На адрес электронной почты письмо для активации выслано не будет,</p>
+<p>так как в forms.py user.is_active = True и user.is_activated = True</p>
+{% endblock %}

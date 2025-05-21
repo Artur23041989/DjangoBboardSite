@@ -1,9 +1,16 @@
 from django.urls import path
-from .views import index, other_page, BBLoginView, profile, BBLogoutView
+from .views import (index, other_page, BBLoginView, profile, BBLogoutView,
+                    ProfileEditView, PasswordEditView, RegisterView,
+                    RegisterDoneView, ProfileDeleteView)
 
 app_name = 'bboard'
 urlpatterns = [
+    path('accounts/register/done', RegisterDoneView.as_view(), name='register_done'),
+    path('accounts/register', RegisterView.as_view(), name='register'),
     path('accounts/logout/', BBLogoutView.as_view(), name='logout'),
+    path('account/password/edit', PasswordEditView.as_view(), name='password_edit'),
+    path('accounts/profile/delete', ProfileDeleteView.as_view(), name='profile_delete'),
+    path('accounts/profile/edit', ProfileEditView.as_view(), name='profile_edit'),
     path('accounts/profile/', profile, name='profile'),
     path('accounts/login/', BBLoginView.as_view(), name='login'),
     path('<str:page>/', other_page, name='other'),
