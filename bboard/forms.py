@@ -1,5 +1,5 @@
 from django import forms
-from .models import AdvUser
+from .models import AdvUser, SuperRubric, SubRubric
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 
@@ -47,6 +47,17 @@ class RegisterForm(forms.ModelForm):
         model = AdvUser
         fields = ('username', 'email', 'password1', 'password2',
                   'first_name', 'last_name', 'send_messages')
+
+class SubRubricForm(forms.ModelForm):
+    super_rubric = forms.ModelChoiceField(queryset=SuperRubric.object.all(),
+                                          empty_label=None,
+                                          label='Надрубрика',
+                                          required=True)
+
+    class Meta:
+        model = SubRubric
+        fields = '__all__'
+
 
 
 
