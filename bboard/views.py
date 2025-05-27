@@ -10,10 +10,12 @@ from django.contrib.messages.views import SuccessMessageMixin # вывод вс�
 from django.contrib.auth.mixins import LoginRequiredMixin # суперкласс, запрещающий доступ к контроллеру гостям
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
-from .models import AdvUser
-from .forms import ProfileEditForm, RegisterForm
+from .models import AdvUser, SubRubric, Bb
+from .forms import ProfileEditForm, RegisterForm, SearchForm
 from django.views.generic.base import TemplateView
 from django.contrib.auth import logout
+from django.core.paginator import Paginator
+from django.db.models import Q
 
 
 
@@ -92,3 +94,35 @@ class ProfileDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
         if not queryset:
             queryset = self.get_queryset()
         return get_object_or_404(queryset, pk=self.user_id)
+
+def rubric_bbs(request, pk):
+    rubric = get_object_or_404(SubRubric, pk=pk)
+    bbs = Bb.objects.filter(is_active=True, rubric=pk)
+    if 'keyword' in request.GET:
+        keyword = request.GET['keyword']
+        q = Q(title__icontains=keyword) | Q(content__icontains=keyword)
+        bbs = bbs.filter(q)
+    else:
+        keyword = ''
+    form = SearchForm(initial={'keyword':keyword})
+    paginator = Paginator(bbs, 2)
+    if 'page' in request.GET:
+        page_num = request.GET['page']
+    else:
+        page_num = 1
+    page = paginator.get_page(page_num)
+    context = {
+        'rubric': rubric,
+        'page': page,
+        'bbs': page.object_list,
+        'form': form
+    }
+    return render(request, 'bboard/rubric_bbs.html', context)
+
+def bb_detail(request, rubric_pk, pk):
+    bb = get_object_or_404(Bb, pk=pk)
+    ais = bb.additionalimage_set.all()
+    context = {'bb': bb, 'ais': ais}
+    return render(request, 'bboard/bb_detail.html', context)
+
+
