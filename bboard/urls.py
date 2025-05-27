@@ -3,6 +3,7 @@ from .views import (index, other_page, BBLoginView, profile, BBLogoutView,
                     ProfileEditView, PasswordEditView, RegisterView,
                     RegisterDoneView, ProfileDeleteView, rubric_bbs, bb_detail)
 
+
 app_name = 'bboard'
 urlpatterns = [
     path('accounts/register/done', RegisterDoneView.as_view(), name='register_done'),
@@ -18,3 +19,4 @@ urlpatterns = [
     path('<str:page>/', other_page, name='other'),
     path('', index, name='index')
 ]
+

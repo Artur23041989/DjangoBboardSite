@@ -3,14 +3,16 @@
 {% load django_bootstrap5 %}
 {% load static %}
 
-{% block title %} {{ rubric }} {% endblock %}
+{% block title %}{{ rubric }}{% endblock %}
 
 {% block content %}
 <h2 class="mb-2">{{ rubric }}</h2>
-<form class="row row-cols=md=auto justify-content-end">
-    {% bootstrap_field form.keyword show_label=False wrapper_class='col-12' %}
-    <div class="col-12">
-        {% bootstrap_button 'Искать'%}
+<form class="d-flex justify-content-end" method="get">
+    <div class="d-flex align-items-center">
+        {% bootstrap_field form.keyword show_label=False wrapper_class='flex-fill' %}
+        <div class="ms-2">
+            {% bootstrap_button 'Искать' %}
+        </div>
     </div>
 </form>
 {% if bbs %}
@@ -27,7 +29,7 @@
                 {% endif %}
             </a>
             <div class="col-md-10 card-body">
-                <h3 class="card-title"><a href="{{ url}}{{ all }}"> {{  bb.title }}</a></h3>
+                <h3 class="card-title"><a href="{{ url }}{{ all }}"> {{  bb.title }}</a></h3>
                 <div class="card-text mb-2">{{ bb.content }}</div>
                 <p class="card-text fw-bold">{{ bb.price }} руб.</p>
                 <p class="card-text text-end fst-italic">{{ bb.created_at }}</p>

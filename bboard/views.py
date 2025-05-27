@@ -20,8 +20,11 @@ from django.db.models import Q
 
 
 
+
 def index(request):
-    return render(request, 'bboard/index.html')
+    bbs = Bb.objects.filter(is_active=True).select_related('rubric')[:10]
+    context = {'bbs':bbs}
+    return render(request, 'bboard/index.html', context)
 
 def other_page(request, page):
     try:
@@ -104,7 +107,7 @@ def rubric_bbs(request, pk):
         bbs = bbs.filter(q)
     else:
         keyword = ''
-    form = SearchForm(initial={'keyword':keyword})
+    form = SearchForm(initial={'keyword': keyword})
     paginator = Paginator(bbs, 2)
     if 'page' in request.GET:
         page_num = request.GET['page']
