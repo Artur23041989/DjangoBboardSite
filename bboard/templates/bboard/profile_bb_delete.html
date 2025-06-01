@@ -1,0 +1,12 @@
+{% extends 'bboard/basic.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}Удаление объявления - Профиль пользователя{% endblock %}
+
+{% block content %}
+<h2>Удаление объявления</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_button 'Удалить' %}
+</form>
+{% endblock %}
